@@ -6,6 +6,7 @@
 //Vetor onde ficarão os registros
 
 let registros=[];
+let indiceEditando = null;
 
 //===============================
 //Seletores
@@ -53,7 +54,19 @@ function cadastrarRegistro(event){
 
     };
 
-    registros.push(registro);
+    if(indiceEditando == null){
+
+        registros.push(registro);
+
+
+    }else{
+
+        registros[indiceEditando] = registro;
+
+        indiceEditando = null;
+    }
+
+    
 
     salvarLocalStorage();
 
@@ -83,7 +96,14 @@ function atualizarTabela(){
             <td>${registro.momento}</td>
             <td>${registro.observacao}</td>
             <td>
-                <button onclick="excluirRegistro(${indice})">
+
+                
+                <button onclick="editarRegistro(${indice})">
+                ✏️
+
+                </button>
+
+                <button type="button" onclick="alert('cliquei no editar')">
                 🗑️
 
                 </button>
@@ -93,6 +113,19 @@ function atualizarTabela(){
 
 });
 
+}
+
+function editarRegistro(indice){
+
+    console.log("Botão editar clicado!", indice);
+
+    indiceEditando = indice;
+
+    const registro = registros[indice];
+
+    document.getElementById("valor").value = registro.valor;
+    document.getElementById("momento").value = registro.momento;
+    document.getElementById("observacao").value = registro.observacao.trim();
 }
 
 
@@ -185,9 +218,7 @@ function excluirRegistro(indice){
 
 }
 
-function editarRegistro(){
 
-}
 
 //===============================
 carregarLocalStorage();
